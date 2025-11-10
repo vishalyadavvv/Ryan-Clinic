@@ -1274,30 +1274,33 @@ header {
     font-size: 1.8rem;
 }
 
-/* Tablet Styles */
+/* Tablet & Mobile Styles */
 @media (max-width: 768px) {
     .hero-section {
-        padding: 40px 15px;
-        min-height: 80vh;
+        padding: 25px 15px;
+        min-height: auto; /* Let content decide height */
     }
 
     .sparkle {
         font-size: 2rem;
-        margin-right: 10px;
+        margin-right: 8px;
     }
 
     .main-heading {
-        letter-spacing: 1px;
-        margin-bottom: 30px;
+        font-size: 22px;
+        margin-bottom: 20px;
+        line-height: 1.3;
     }
 
     .subheading {
-        margin-bottom: 40px;
+        font-size: 16px;
+        margin-bottom: 25px;
     }
 
     .cta-button {
-        padding: 18px 40px;
-        gap: 10px;
+        padding: 14px 28px;
+        font-size: 1rem;
+        gap: 8px;
     }
 }
 
@@ -2241,11 +2244,17 @@ header {
 .cta-container {
   display: flex;
   justify-content: center;
-  gap: 15px; /* Reduced gap */
+  align-items: center;
   flex-wrap: wrap;
+  gap: 15px;
   margin-top: 40px;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden; /* prevents horizontal overflow */
 }
 
+/* Buttons */
 .cta-button {
   padding: 14px 35px;
   font-size: 1rem;
@@ -2254,16 +2263,23 @@ header {
   border-radius: 40px;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-align: center;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .cta-button.yellow {
   background-color: #facc15;
   color: #991b1b;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  
 }
 
 .cta-button.green {
   background-color: #16a34a;
-  color: white;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .cta-button:hover {
@@ -2271,11 +2287,29 @@ header {
   opacity: 0.9;
 }
 
-/* Responsive */
+/* Responsive Fix */
 @media (max-width: 768px) {
+  .cta-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .cta-button {
+    width: 90%;
+    max-width: 320px;
+    font-size: 0.95rem;
+    padding: 12px 20px;
+    overflow: hidden;
+    overflow-x: hidden;
+  }
+
   .specialists-grid {
     gap: 10px;
   }
+
   .specialist-card {
     width: 90%;
   }
