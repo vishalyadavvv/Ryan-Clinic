@@ -142,19 +142,19 @@ if ('IntersectionObserver' in window) {
 // Counter Animation Function
 function animateCounter(element, target, duration = 2000) {
     const start = 0;
-    const increment = target / (duration / 16); // 60 FPS
+    const increment = target / (duration / 16); // ~60 FPS
     let current = start;
-    
+
     const timer = setInterval(() => {
         current += increment;
-        
+
         if (current >= target) {
             element.textContent = formatNumber(target);
             clearInterval(timer);
         } else {
             element.textContent = formatNumber(Math.floor(current));
         }
-    }, );
+    }, 16); // <-- FIXED: Run every ~16ms for smooth 60FPS animation
 }
 
 // Format number with commas
@@ -166,15 +166,15 @@ function formatNumber(num) {
 function initCounters() {
     const statNumbers = document.querySelectorAll('.stat-number');
     let hasAnimated = false;
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !hasAnimated) {
                 hasAnimated = true;
-                
+
                 statNumbers.forEach((stat, index) => {
                     const target = parseInt(stat.getAttribute('data-target'));
-                    
+
                     // Stagger the animations
                     setTimeout(() => {
                         animateCounter(stat, target, 2000);
@@ -185,7 +185,7 @@ function initCounters() {
     }, {
         threshold: 0.3
     });
-    
+
     // Observe the stats section
     const statsSection = document.querySelector('.stats-section');
     if (statsSection) {
@@ -194,32 +194,32 @@ function initCounters() {
 }
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initCounters();
-    
+
     // Add pulse animation to icons on hover
     const statItems = document.querySelectorAll('.stat-item');
-    
+
     statItems.forEach(item => {
-        item.addEventListener('mouseenter', function() {
+        item.addEventListener('mouseenter', function () {
             const icon = this.querySelector('.stat-icon');
             if (icon) {
                 icon.style.transform = 'scale(1.1)';
                 icon.style.transition = 'transform 0.3s ease';
             }
         });
-        
-        item.addEventListener('mouseleave', function() {
+
+        item.addEventListener('mouseleave', function () {
             const icon = this.querySelector('.stat-icon');
             if (icon) {
                 icon.style.transform = 'scale(1)';
             }
         });
     });
-    
+
     // Optional: Add click tracking
-    statItems.forEach((item, index) => {
-        item.addEventListener('click', function() {
+    statItems.forEach((item) => {
+        item.addEventListener('click', function () {
             const label = this.querySelector('.stat-label');
             if (label) {
                 console.log(`Stat clicked: ${label.textContent}`);
@@ -230,25 +230,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Optional: Restart animation when scrolling back up
 let scrollTimeout;
-window.addEventListener('scroll', function() {
+window.addEventListener('scroll', function () {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
         const statsSection = document.querySelector('.stats-section');
         if (statsSection) {
             const rect = statsSection.getBoundingClientRect();
-            
+
             // If section is out of view (scrolled past), reset for next view
             if (rect.bottom < 0 || rect.top > window.innerHeight) {
-                // Reset numbers for re-animation
                 const statNumbers = document.querySelectorAll('.stat-number');
                 statNumbers.forEach(stat => {
                     stat.textContent = '0';
                 });
+                // Re-initialize observer to trigger again
+                initCounters();
             }
         }
     }, 100);
 });
-
 
 // ...................................THE TURKISH ADVANTAGE.............................//
 
